@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STYLE ZONE — Премиальный интернет-магазин одежды</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0f0f11',
+                            cream: '#f4f0ea',
+                            beige: '#e8e2d5',
+                            accent: '#111111',
+                            gold: '#c5a059',
+                            muted: '#71717a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Syne', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c5a059;
+        }
+
+        .glass-header {
+            background: rgba(15, 15, 17, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .img-zoom {
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.06);
+        }
+
+        .badge-discount {
+            background: linear-gradient(135deg, #c5a059 0%, #9a7b3e 100%);
+        }
+
+        /* Toast animation */
+        @keyframes slideUp {
+            from { transform: translateY(100%) translateX(-50%); opacity: 0; }
+            to { transform: translateY(0) translateX(-50%); opacity: 1; }
+        }
+        .toast-animate {
+            animation: slideUp 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-gold selection:text-black">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-brand-dark via-zinc-900 to-brand-dark border-b border-white/10 text-xs py-2 px-4 text-center text-zinc-400 font-medium tracking-widest uppercase flex items-center justify-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse"></span>
+        БЕСПЛАТНАЯ ДОСТАВКА ПО ТАШКЕНТУ И УЗБЕКИСТАНУ ПРИ ЗАКАЗЕ ОТ 1 000 000 UZS
+    </div>
+
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-50 glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Mobile Menu Trigger -->
+            <button id="mobile-menu-btn" class="lg:hidden text-2xl text-white p-2 hover:text-brand-gold transition" aria-label="Меню">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="#" onclick="navTo('home')" class="flex flex-col items-start group">
+                <span class="font-display font-extrabold text-2xl tracking-tighter text-white group-hover:text-brand-gold transition">STYLE ZONE</span>
+                <span class="text-[9px] font-bold tracking-[0.3em] text-brand-gold uppercase -mt-1">Couture & Streetwear</span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold tracking-wide uppercase">
+                <button onclick="navTo('home')" class="nav-link text-white hover:text-brand-gold transition py-1" data-target="home">Главная</button>
+                <button onclick="navTo('catalog')" class="nav-link text-zinc-400 hover:text-brand-gold transition py-1" data-target="catalog">Каталог</button>
+                <button onclick="navTo('catalog', 'Мужское')" class="nav-link text-zinc-400 hover:text-brand-gold transition py-1">Мужское</button>
+                <button onclick="navTo('catalog', 'Женское')" class="nav-link text-zinc-400 hover:text-brand-gold transition py-1">Женское</button>
+                <button onclick="navTo('about')" class="nav-link text-zinc-400 hover:text-brand-gold transition py-1" data-target="about">О Бренде</button>
+                <button onclick="navTo('contacts')" class="nav-link text-zinc-400 hover:text-brand-gold transition py-1" data-target="contacts">Контакты</button>
+            </nav>
+
+            <!-- User Action Controls -->
+            <div class="flex items-center space-x-4 sm:space-x-6">
+                <!-- Search Button -->
+                <button onclick="navTo('catalog')" class="text-zinc-300 hover:text-brand-gold transition p-2 text-lg">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                
+                <!-- Wishlist Badge Button -->
+                <button onclick="navTo('favorites')" class="relative text-zinc-300 hover:text-brand-gold transition p-2 text-lg">
+                    <i class="fa-regular fa-heart"></i>
+                    <span id="fav-count-badge" class="absolute -top-1 -right-1 bg-brand-gold text-black font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="navTo('cart')" class="relative bg-zinc-900 border border-zinc-800 hover:border-brand-gold/50 px-4 py-2.5 rounded-full text-white flex items-center gap-3 transition">
+                    <i class="fa-solid fa-bag-shopping text-brand-gold"></i>
+                    <span class="text-xs font-bold tracking-wider hidden sm:inline">КОРЗИНА</span>
+                    <span id="cart-count-badge" class="bg-brand-gold text-black font-black text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer Overlay -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-zinc-800/80 bg-brand-dark/95 backdrop-blur-xl px-6 py-6 space-y-4">
+            <button onclick="navTo('home'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-white py-2">Главная</button>
+            <button onclick="navTo('catalog'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">Весь Каталог</button>
+            <button onclick="navTo('catalog', 'Мужское'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">Мужская Коллекция</button>
+            <button onclick="navTo('catalog', 'Женское'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">Женская Коллекция</button>
+            <button onclick="navTo('catalog', 'Кроссовки'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">Обувь & Сникеры</button>
+            <button onclick="navTo('about'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">О Бренде STYLE ZONE</button>
+            <button onclick="navTo('contacts'); toggleMobileMenu();" class="block w-full text-left text-lg font-bold text-zinc-300 py-2">Контакты</button>
+        </div>
+    </header>
+
+    <!-- MAIN DYNAMIC CONTENT CONTAINER -->
+    <main id="main-content" class="flex-grow">
+        <!-- Views are populated via JavaScript -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-zinc-900 pt-16 pb-12 mt-20 text-zinc-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-4">
+                    <a href="#" onclick="navTo('home')" class="inline-block">
+                        <span class="font-display font-extrabold text-2xl text-white tracking-tighter">STYLE ZONE</span>
+                        <span class="block text-[9px] font-bold tracking-[0.3em] text-brand-gold uppercase">Tashkent Edition</span>
+                    </a>
+                    <p class="text-sm text-zinc-400 leading-relaxed">
+                        Эксклюзивный бренд премиальной streetwear & классической одежды. Минималистичный крой, экологичные ткани и бескомпромиссное качество.
+                    </p>
+                    <div class="flex space-x-4 text-lg text-zinc-300">
+                        <a href="https://t.me" target="_blank" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center hover:bg-brand-gold hover:text-black transition"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="https://instagram.com" target="_blank" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center hover:bg-brand-gold hover:text-black transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://facebook.com" target="_blank" class="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center hover:bg-brand-gold hover:text-black transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="font-display font-bold text-white uppercase text-sm tracking-widest mb-6">Навигация</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" onclick="navTo('catalog')" class="hover:text-brand-gold transition">Каталог товаров</a></li>
+                        <li><a href="#" onclick="navTo('catalog', 'Мужское')" class="hover:text-brand-gold transition">Мужская одежда</a></li>
+                        <li><a href="#" onclick="navTo('catalog', 'Женское')" class="hover:text-brand-gold transition">Женская одежда</a></li>
+                        <li><a href="#" onclick="navTo('catalog', 'Кроссовки')" class="hover:text-brand-gold transition">Сникерсы и Обувь</a></li>
+                        <li><a href="#" onclick="navTo('favorites')" class="hover:text-brand-gold transition">Избранное</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Customer Service -->
+                <div>
+                    <h4 class="font-display font-bold text-white uppercase text-sm tracking-widest mb-6">Информация</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" onclick="navTo('about')" class="hover:text-brand-gold transition">О Бренде STYLE ZONE</a></li>
+                        <li><a href="#" onclick="navTo('contacts')" class="hover:text-brand-gold transition">Доставка и Оплата</a></li>
+                        <li><a href="#" onclick="navTo('contacts')" class="hover:text-brand-gold transition">Возврат и Обмен</a></li>
+                        <li><a href="#" onclick="navTo('contacts')" class="hover:text-brand-gold transition">Контакты</a></li>
+                        <li><span class="text-zinc-500">Пн-Вс: 10:00 - 22:00</span></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div>
+                    <h4 class="font-display font-bold text-white uppercase text-sm tracking-widest mb-6">Закрытый Клуб</h4>
+                    <p class="text-sm text-zinc-400 mb-4">Подпишитесь для получения эксклюзивных анонсов новых дропов и персональных скидок.</p>
+                    <form onsubmit="handleSubscribe(event)" class="space-y-2">
+                        <div class="relative">
+                            <input type="email" required placeholder="Ваш Email..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-gold transition">
+                            <button type="submit" class="absolute right-2 top-2 bg-brand-gold text-black px-4 py-1.5 rounded text-xs font-bold uppercase hover:bg-white transition">OK</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="border-t border-zinc-900 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500 gap-4">
+                <p>© 2026 STYLE ZONE Tashkent. Все права защищены.</p>
+                <p class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Прием заказов работает 24/7
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative shadow-2xl">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-brand-gold hover:text-black transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none"></div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        /* =========================================================================
+           1. PRODUCT DATABASE (40 UNIQUE ITEMS WITH UNSPLASH IMAGES & UZS PRICES)
+           ========================================================================= */
+        const PRODUCTS = [
+            // МУЖСКОЕ
+            {
+                id: 1,
+                title: "Пальто Оверсайз Cashmere Blend",
+                category: "Мужское",
+                type: "Куртки",
+                price: 1850000,
+                oldPrice: 2200000,
+                discountPercent: 15,
+                image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+                description: "Роскошное двубортное пальто свободного кроя из смеси итальянской шерсти и кашемира. Идеальная посадка, премиальная шелковая подкладка.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#111111", "#4a4e4d"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 2,
+                title: "Кожаный Блейзер Minimalist Black",
+                category: "Мужское",
+                type: "Куртки",
+                price: 2400000,
+                image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80",
+                description: "Куртка-блейзер из матовой наппа-кожи. Лаконичный крой, потайные застежки и акцентная строчка ручной работы.",
+                sizes: ["S", "M", "L"],
+                colors: ["#0f0f11"],
+                isNew: true,
+                isPopular: false
+            },
+            {
+                id: 3,
+                title: "Худи Heavyweight Heavy-Cotton 480g",
+                category: "Мужское",
+                type: "Худи",
+                price: 720000,
+                image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80",
+                description: "Плотное худи из органического хлопка высокой плотности (480 г/м²). Держит форму, мягкий начес внутри, объемный капюшон.",
+                sizes: ["S", "M", "L", "XL"],
+                colors: ["#111111", "#dedcd8", "#474543"],
+                isNew: false,
+                isPopular: true
+            },
+            {
+                id: 4,
+                title: "Джинсы Straight Raw Denim",
+                category: "Мужское",
+                type: "Джинсы",
+                price: 890000,
+                image: "https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=800&q=80",
+                description: "Классический прямой крой из необработанного денима японского производства. Со временем образуют уникальный индивидуальный фейд.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#1e293b", "#0f172a"],
+                isNew: false,
+                isPopular: true
+            },
+            {
+                id: 5,
+                title: "Футболка Essential Boxy Fit",
+                category: "Мужское",
+                type: "Футболки",
+                price: 350000,
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+                description: "Базовая футболка прямого свободного силуэта Boxy. Плотный хлопок с микроворсом, стойкий вырез.",
+                sizes: ["S", "M", "L", "XL"],
+                colors: ["#ffffff", "#000000", "#e8e2d5"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 6,
+                title: "Бомбер Satin Flight Jacket",
+                category: "Мужское",
+                type: "Куртки",
+                price: 1450000,
+                oldPrice: 1700000,
+                discountPercent: 15,
+                image: "https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?auto=format&fit=crop&w=800&q=80",
+                description: "Утепленный бомбер из плотного японского нейлона с водоотталкивающим покрытием. Плотные трикотажные манжеты.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#1e2d24", "#0f0f11"],
+                isNew: false,
+                isPopular: false
+            },
+
+            // ЖЕНСКОЕ
+            {
+                id: 7,
+                title: "Платье Слип Silk Satin Beige",
+                category: "Женское",
+                type: "Платья",
+                price: 1150000,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80",
+                description: "Элегантное платье миди на тонких бретелях из натурального шелкового сатина. Изящный струящийся силуэт.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#e8e2d5", "#111111"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 8,
+                title: "Блейзер Двубортный Wool Tailored",
+                category: "Женское",
+                type: "Куртки",
+                price: 1650000,
+                image: "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&w=800&q=80",
+                description: "Структурированный жакет с четкой линией плеч. Выполнен из тонкой шерсти с добавлением вискозы.",
+                sizes: ["S", "M", "L"],
+                colors: ["#111111", "#94a3b8"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 9,
+                title: "Свитшот Cropped Fleece Cream",
+                category: "Женское",
+                type: "Худи",
+                price: 580000,
+                image: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=800&q=80",
+                description: "Укороченный свитшот из мягкого премиального футера с начесом. Спущенная линия плеча.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#f4f0ea", "#000000"],
+                isNew: false,
+                isPopular: false
+            },
+            {
+                id: 10,
+                title: "Брюки Палаццо High-Waist Neutral",
+                category: "Женское",
+                type: "Джинсы",
+                price: 820000,
+                image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80",
+                description: "Широкие брюки палаццо с высокой посадкой и глубокими защипами. Визуально вытягивают силуэт.",
+                sizes: ["XS", "S", "M", "L"],
+                colors: ["#e2d9cc", "#18181b"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 11,
+                title: "Тренч Коттоновый Oversized Double-Breasted",
+                category: "Женское",
+                type: "Куртки",
+                price: 1980000,
+                oldPrice: 2350000,
+                discountPercent: 16,
+                image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?auto=format&fit=crop&w=800&q=80",
+                description: "Классический двубортный тренчкот из водоотталкивающего габардина. Пояс с тяжелой роговой пряжкой.",
+                sizes: ["S", "M"],
+                colors: ["#d6c5b0", "#111111"],
+                isNew: false,
+                isPopular: true
+            },
+            {
+                id: 12,
+                title: "Топ Трикотажный Ribbed Knit",
+                category: "Женское",
+                type: "Футболки",
+                price: 320000,
+                image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80",
+                description: "Базовый кроп-топ из фактурного трикотажа в рубчик. Приятная к телу вискозная пряжа.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#ffffff", "#0f0f11"],
+                isNew: true,
+                isPopular: false
+            },
+
+            // КРОССОВКИ & ОБУВЬ
+            {
+                id: 13,
+                title: "Сникеры Runner Retro Leather",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 1650000,
+                image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80",
+                description: "Премиальные кеды в ретро-стиле из телячьей кожи и замши. Анатомическая стелька, массивная легкая подошва.",
+                sizes: ["39", "40", "41", "42", "43", "44"],
+                colors: ["#f8fafc", "#475569"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 14,
+                title: "Кроссовки Urban Chunky Soles",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 1890000,
+                oldPrice: 2100000,
+                discountPercent: 10,
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+                description: "Массивные футуристичные кроссовки из комбинации дышащего сетчатого текстиля и неопрена.",
+                sizes: ["40", "41", "42", "43", "45"],
+                colors: ["#111111", "#94a3b8"],
+                isNew: false,
+                isPopular: true
+            },
+            {
+                id: 15,
+                title: "Лоферы Classic Leather Black",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 1750000,
+                image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80",
+                description: "Элегантные кожаные лоферы с усиленным рантом. Внутри мягкая подкладка из натуральной шевро.",
+                sizes: ["40", "41", "42", "43"],
+                colors: ["#000000"],
+                isNew: true,
+                isPopular: false
+            },
+            {
+                id: 16,
+                title: "Ботинки Chelsea High Leather",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 2100000,
+                image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=800&q=80",
+                description: "Высокие ботинки челоси на утолщенной износостойкой подошве Vibram. Эластичные боковые вставки.",
+                sizes: ["39", "40", "41", "42", "43"],
+                colors: ["#0f0f11", "#451a03"],
+                isNew: false,
+                isPopular: true
+            },
+
+            // АКСЕССУАРЫ
+            {
+                id: 17,
+                title: "Сумка Tote Leather Minimal",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 1250000,
+                image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80",
+                description: "Минималистичный шопер из зернистой кожи. Внутри съемный чехол на молнии для ноутбука 15 дюймов.",
+                sizes: ["ONE SIZE"],
+                colors: ["#111111", "#78350f"],
+                isNew: true,
+                isPopular: true
+            },
+            {
+                id: 18,
+                title: "Очки Солнцезащитные Acetate Frame",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 540000,
+                image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+                description: "Массивные солнцезащитные очки из качественного японского ацетата с затененными линзами UV400.",
+                sizes: ["ONE SIZE"],
+                colors: ["#000000", "#d97706"],
+                isNew: true,
+                isPopular: false
+            },
+            {
+                id: 19,
+                title: "Ремень Кожаный Silver Buckle",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 420000,
+                image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80",
+                description: "Строгий ремень из цельного куска плотной бычьей кожи. Металлическая пряжка с матовым финишем.",
+                sizes: ["S-M", "L-XL"],
+                colors: ["#000000"],
+                isNew: false,
+                isPopular: true
+            },
+            {
+                id: 20,
+                title: "Шарф Cashmere Knit Oversize",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 680000,
+                oldPrice: 800000,
+                discountPercent: 15,
+                image: "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?auto=format&fit=crop&w=800&q=80",
+                description: "Объемный шарф крупной вязки из 100% монгольского кашемира. Невероятно мягкий и теплый.",
+                sizes: ["ONE SIZE"],
+                colors: ["#94a3b8", "#f4f0ea", "#1e293b"],
+                isNew: false,
+                isPopular: false
+            },
+
+            // ДОПОЛНИТЕЛЬНЫЕ УНИКАЛЬНЫЕ ТОВАРЫ (ДО 40 ШТ)
+            {
+                id: 21,
+                title: "Куртка Джинсовая Vintage Wash",
+                category: "Мужское",
+                type: "Куртки",
+                price: 1100000,
+                image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80",
+                description: "Куртка из плотного винтажного денима с легким эффектом потертости.",
+                sizes: ["S", "M", "L"],
+                colors: ["#3b82f6"],
+                isNew: true, isPopular: false
+            },
+            {
+                id: 22,
+                title: "Кардиган Шерстяной Cable Knit",
+                category: "Мужское",
+                type: "Худи",
+                price: 950000,
+                image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80",
+                description: "Уютный вязаный кардиган фактурной вязки на роговых пуговицах.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#f4f0ea", "#1e293b"],
+                isNew: false, isPopular: true
+            },
+            {
+                id: 23,
+                title: "Брюки Карго Technical Nylon",
+                category: "Мужское",
+                type: "Джинсы",
+                price: 920000,
+                image: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=800&q=80",
+                description: "Технологичные брюки-карго с вместительными накладными карманами и регулируемым низом.",
+                sizes: ["S", "M", "L"],
+                colors: ["#18181b", "#334155"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 24,
+                title: "Худи Zip-Up Acid Wash",
+                category: "Мужское",
+                type: "Худи",
+                price: 790000,
+                image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80",
+                description: "Худи на молнии с вареным эффектом Acid Wash. Кастомная металлическая фурнитура.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#475569"],
+                isNew: false, isPopular: false
+            },
+            {
+                id: 25,
+                title: "Свитшот Лого Minimal Line",
+                category: "Мужское",
+                type: "Худи",
+                price: 640000,
+                image: "https://images.unsplash.com/photo-1614975058789-41316d0e2e9c?auto=format&fit=crop&w=800&q=80",
+                description: "Минималистичный свитшот с микро-вышивкой STYLE ZONE на груди.",
+                sizes: ["S", "M", "L", "XL"],
+                colors: ["#000000", "#ffffff"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 26,
+                title: "Рубашка Лен-Коттон Summer Breeze",
+                category: "Мужское",
+                type: "Футболки",
+                price: 590000,
+                image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80",
+                description: "Легкая рубашка расслабленного кроя из смеси натурального льна и хлопка.",
+                sizes: ["M", "L", "XL"],
+                colors: ["#f8fafc", "#e2e8f0"],
+                isNew: false, isPopular: false
+            },
+            {
+                id: 27,
+                title: "Куртка Пуховик Metallic Gloss",
+                category: "Женское",
+                type: "Куртки",
+                price: 2300000,
+                image: "https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80",
+                description: "Объемный пуховик из глянцевого нейлона с натуральным гусиным пухом (90/10).",
+                sizes: ["S", "M"],
+                colors: ["#09090b", "#94a3b8"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 28,
+                title: "Платье Коктейльное Asymmetric Cut",
+                category: "Женское",
+                type: "Платья",
+                price: 1390000,
+                image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80",
+                description: "Вечернее платье асимметричного кроя с элегантным разрезом по бедру.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#111111"],
+                isNew: true, isPopular: false
+            },
+            {
+                id: 29,
+                title: "Юбка Кожаная Миди A-Line",
+                category: "Женское",
+                type: "Джинсы",
+                price: 980000,
+                image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=800&q=80",
+                description: "Юбка А-силуэта из мягкой эко-кожи на шелковистой подкладке.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#0f0f11", "#451a03"],
+                isNew: false, isPopular: true
+            },
+            {
+                id: 30,
+                title: "Костюм Трикотажный Cashmere Touch",
+                category: "Женское",
+                type: "Худи",
+                price: 1550000,
+                image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
+                description: "Премиальный костюм из худи и широких брюк из невероятно мягкого трикотажа.",
+                sizes: ["S", "M"],
+                colors: ["#e8e2d5", "#64748b"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 31,
+                title: "Шорты Джинсовые High Waist",
+                category: "Женское",
+                type: "Джинсы",
+                price: 480000,
+                image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=800&q=80",
+                description: "Классические джинсовые шорты с высокой посадкой и необработанным краем.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#60a5fa"],
+                isNew: false, isPopular: false
+            },
+            {
+                id: 32,
+                title: "Боди Модальное Seamless Black",
+                category: "Женское",
+                type: "Футболки",
+                price: 360000,
+                image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80",
+                description: "Бесшовное боди из микромодала. Идеальная базовая вещь под жакеты.",
+                sizes: ["XS", "S", "M"],
+                colors: ["#000000", "#ffffff"],
+                isNew: false, isPopular: true
+            },
+            {
+                id: 33,
+                title: "Кеды Кожаные Minimal White",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 1350000,
+                image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80",
+                description: "Лаконичные белые кеды из гладкой телячьей кожи на прошитой подошве.",
+                sizes: ["36", "37", "38", "39", "40", "41", "42"],
+                colors: ["#ffffff"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 34,
+                title: "Мюли Кожаные Square Toe",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 1280000,
+                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80",
+                description: "Элегантные мюли с квадратным мысом на устойчивом геометричном каблуке.",
+                sizes: ["36", "37", "38", "39"],
+                colors: ["#0f0f11", "#e8e2d5"],
+                isNew: true, isPopular: false
+            },
+            {
+                id: 35,
+                title: "Сандали Спортивные Strap Sandal",
+                category: "Кроссовки",
+                type: "Кроссовки",
+                price: 890000,
+                image: "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=800&q=80",
+                description: "Удобные сандалии с мягкими нейлоновыми ремешками на амортизирующей подошве.",
+                sizes: ["38", "39", "40", "41", "42"],
+                colors: ["#18181b"],
+                isNew: false, isPopular: false
+            },
+            {
+                id: 36,
+                title: "Сумка Кроссбоди Mini Structure",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 850000,
+                image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80",
+                description: "Компактная структурная сумка из гладкой кожи на широком тканевом ремне.",
+                sizes: ["ONE SIZE"],
+                colors: ["#000000", "#c5a059"],
+                isNew: true, isPopular: true
+            },
+            {
+                id: 37,
+                title: "Панама Нейлоновая Tech Bucket Hat",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 310000,
+                image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?auto=format&fit=crop&w=800&q=80",
+                description: "Универсальная панама из влагоотталкивающего мембранного нейлона.",
+                sizes: ["ONE SIZE"],
+                colors: ["#09090b", "#475569"],
+                isNew: false, isPopular: false
+            },
+            {
+                id: 38,
+                title: "Кошелек Кожаный Zip Wallet",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 490000,
+                image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80",
+                description: "Компактное портмоне на круговой молнии с отделением для карт и монет.",
+                sizes: ["ONE SIZE"],
+                colors: ["#0f0f11"],
+                isNew: false, isPopular: true
+            },
+            {
+                id: 39,
+                title: "Шапка Бини Merino Wool Beanie",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 290000,
+                image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=800&q=80",
+                description: "Лаконичная шапка-бини с отворотом из 100% шерсти мериноса.",
+                sizes: ["ONE SIZE"],
+                colors: ["#000000", "#64748b", "#d97706"],
+                isNew: true, isPopular: false
+            },
+            {
+                id: 40,
+                title: "Носки Набор 3-Pack Ribbed Socks",
+                category: "Аксессуары",
+                type: "Аксессуары",
+                price: 180000,
+                image: "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?auto=format&fit=crop&w=800&q=80",
+                description: "Набор из 3 пар высоких плотных носков из чесанного хлопкового трикотажа.",
+                sizes: ["36-40", "41-45"],
+                colors: ["#ffffff", "#000000"],
+                isNew: false, isPopular: true
+            }
+        ];
+
+        /* =========================================================================
+           2. STATE MANAGEMENT & LOCALSTORAGE PERSISTENCE
+           ========================================================================= */
+        let state = {
+            currentView: 'home',
+            cart: JSON.parse(localStorage.getItem('sz_cart')) || [],
+            favorites: JSON.parse(localStorage.getItem('sz_favs')) || [],
+            activeCategory: 'Все',
+            searchQuery: '',
+            sortBy: 'default',
+            selectedProduct: null
+        };
+
+        function saveState() {
+            localStorage.setItem('sz_cart', JSON.stringify(state.cart));
+            localStorage.setItem('sz_favs', JSON.stringify(state.favorites));
+            updateBadges();
+        }
+
+        function formatPrice(amount) {
+            return amount.toLocaleString('ru-RU') + ' UZS';
+        }
+
+        function updateBadges() {
+            const cartBadge = document.getElementById('cart-count-badge');
+            const favBadge = document.getElementById('fav-count-badge');
+
+            const cartCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.innerText = cartCount;
+
+            const favCount = state.favorites.length;
+            if (favCount > 0) {
+                favBadge.innerText = favCount;
+                favBadge.classList.remove('hidden');
+            } else {
+                favBadge.classList.add('hidden');
+            }
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-brand-gold text-black font-extrabold text-xs uppercase tracking-wider px-6 py-3 rounded-full shadow-2xl mb-3 toast-animate flex items-center gap-2 border border-black/20';
+            toast.innerHTML = `<i class="fa-solid fa-check"></i> ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        /* =========================================================================
+           3. ROUTING & CONTROLLER LOGIC
+           ========================================================================= */
+        function navTo(viewName, categoryFilter = null) {
+            state.currentView = viewName;
+            if (categoryFilter) {
+                state.activeCategory = categoryFilter;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update Header Nav active state
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                if (btn.dataset.target === viewName) {
+                    btn.classList.add('text-white', 'border-b-2', 'border-brand-gold');
+                    btn.classList.remove('text-zinc-400');
+                } else {
+                    btn.classList.remove('text-white', 'border-b-2', 'border-brand-gold');
+                    btn.classList.add('text-zinc-400');
+                }
+            });
+
+            renderView();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* =========================================================================
+           4. VIEW RENDERERS
+           ========================================================================= */
+        function renderView() {
+            const container = document.getElementById('main-content');
+
+            switch (state.currentView) {
+                case 'home':
+                    container.innerHTML = renderHomeView();
+                    break;
+                case 'catalog':
+                    container.innerHTML = renderCatalogView();
+                    bindCatalogEvents();
+                    break;
+                case 'cart':
+                    container.innerHTML = renderCartView();
+                    break;
+                case 'favorites':
+                    container.innerHTML = renderFavoritesView();
+                    break;
+                case 'about':
+                    container.innerHTML = renderAboutView();
+                    break;
+                case 'contacts':
+                    container.innerHTML = renderContactsView();
+                    break;
+                default:
+                    container.innerHTML = renderHomeView();
+            }
+        }
+
+        // --- 4.1 HOME VIEW ---
+        function renderHomeView() {
+            const newProducts = PRODUCTS.filter(p => p.isNew).slice(0, 4);
+            const popularProducts = PRODUCTS.filter(p => p.isPopular).slice(0, 4);
+            const discountProducts = PRODUCTS.filter(p => p.discountPercent).slice(0, 4);
+
+            return `
+                <!-- HERO BANNER -->
+                <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-black">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1920&q=80" 
+                         alt="Hero Fashion" class="absolute inset-0 w-full h-full object-cover object-center opacity-40">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/20 to-transparent"></div>
+                    
+                    <div class="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6 py-20">
+                        <span class="inline-block px-4 py-1.5 rounded-full border border-brand-gold/40 bg-brand-gold/10 text-brand-gold text-xs font-extrabold uppercase tracking-[0.3em]">
+                            SPRING / SUMMER 2026 COLLECTION
+                        </span>
+                        <h1 class="font-display font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-none text-white uppercase">
+                            ЭСТЕТИКА <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-brand-beige to-white">БЕСКОМПРОМИССНОСТИ</span>
+                        </h1>
+                        <p class="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto font-light leading-relaxed">
+                            Откройте новый сезон с коллекцией премиального уличного кроя. Строгие силуэты, натуральные ткани и эстетика современного Ташкента.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                            <button onclick="navTo('catalog')" class="w-full sm:w-auto bg-brand-gold text-black font-extrabold text-sm uppercase tracking-widest px-10 py-5 rounded-full hover:bg-white transition duration-300 shadow-xl shadow-brand-gold/10">
+                                Перейти в каталог
+                            </button>
+                            <button onclick="navTo('about')" class="w-full sm:w-auto bg-zinc-900/80 border border-zinc-700 text-white font-extrabold text-sm uppercase tracking-widest px-10 py-5 rounded-full hover:bg-zinc-800 transition duration-300">
+                                О Бренде
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CATEGORIES GRID -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+                        <div>
+                            <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">Категории</span>
+                            <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-1">ВЫБЕРИТЕ СВОЙ СТИЛЬ</h2>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${renderCategoryCard("Мужская Одежда", "Мужское", "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80")}
+                        ${renderCategoryCard("Женская Одежда", "Женское", "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80")}
+                        ${renderCategoryCard("Сникерсы & Обувь", "Кроссовки", "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80")}
+                        ${renderCategoryCard("Аксессуары", "Аксессуары", "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80")}
+                    </div>
+                </section>
+
+                <!-- NEW ARRIVALS -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-zinc-900">
+                    <div class="flex justify-between items-end mb-10">
+                        <div>
+                            <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">Fresh Drop</span>
+                            <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-1">НОВИНКИ СЕЗОНА</h2>
+                        </div>
+                        <button onclick="navTo('catalog')" class="hidden sm:flex items-center gap-2 text-sm font-bold text-brand-gold hover:text-white transition">
+                            СМОТРЕТЬ ВСЕ <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${newProducts.map(p => renderProductCard(p)).join('')}
+                    </div>
+                </section>
+
+                <!-- PROMO BANNER SECTION -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800 p-8 sm:p-16 flex flex-col justify-center">
+                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1600&q=80" 
+                             alt="Promo" class="absolute inset-0 w-full h-full object-cover opacity-25">
+                        <div class="relative z-10 max-w-xl space-y-4">
+                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded uppercase tracking-wider">LIMITED EDITION</span>
+                            <h3 class="font-display font-black text-3xl sm:text-5xl text-white uppercase leading-tight">
+                                УЛИЧНЫЙ ЛЮКС И ИТАЛЬЯНСКИЙ КРОЙ
+                            </h3>
+                            <p class="text-zinc-300 text-sm sm:text-base font-light">
+                                Каждая вещь из линейки Limited выпускается тиражом всего 50 экземпляров по всему миру.
+                            </p>
+                            <button onclick="navTo('catalog')" class="inline-block bg-white text-black font-extrabold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-brand-gold transition">
+                                Исследовать Дроп
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POPULAR PRODUCTS -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="flex justify-between items-end mb-10">
+                        <div>
+                            <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">Best Sellers</span>
+                            <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase mt-1">ПОПУЛЯРНЫЙ ВЫБОР</h2>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${popularProducts.map(p => renderProductCard(p)).join('')}
+                    </div>
+                </section>
+
+                <!-- ADVANTAGES / FEATURES -->
+                <section class="border-t border-b border-zinc-900 bg-zinc-950/50 py-16 my-12">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+                        <div class="space-y-3 p-6 glass-card rounded-2xl">
+                            <div class="w-14 h-14 rounded-full bg-brand-gold/10 text-brand-gold mx-auto flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-white uppercase text-base">Экспресс Доставка</h4>
+                            <p class="text-xs text-zinc-400">Быстрая курьерская доставка по Ташкенту день в день и 2-3 дня по регионам Узбекистана.</p>
+                        </div>
+                        <div class="space-y-3 p-6 glass-card rounded-2xl">
+                            <div class="w-14 h-14 rounded-full bg-brand-gold/10 text-brand-gold mx-auto flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-gem"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-white uppercase text-base">Гарантия Аутентичности</h4>
+                            <p class="text-xs text-zinc-400">Используем только натуральные сертифицированные ткани и итальянскую фурнитуру.</p>
+                        </div>
+                        <div class="space-y-3 p-6 glass-card rounded-2xl">
+                            <div class="w-14 h-14 rounded-full bg-brand-gold/10 text-brand-gold mx-auto flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-arrows-rotate"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-white uppercase text-base">Легкий Обмен и Примерка</h4>
+                            <p class="text-xs text-zinc-400">Примерка перед покупкой в Ташкенте и бесплатный возврат в течение 14 дней.</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderCategoryCard(title, categoryName, imgUrl) {
+            return `
+                <div onclick="navTo('catalog', '${categoryName}')" class="group relative h-96 rounded-2xl overflow-hidden cursor-pointer border border-zinc-800">
+                    <img src="${imgUrl}" alt="${title}" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] text-brand-gold uppercase">Коллекция</span>
+                            <h3 class="font-display font-extrabold text-xl text-white uppercase">${title}</h3>
+                        </div>
+                        <span class="w-10 h-10 rounded-full bg-white/10 group-hover:bg-brand-gold text-white group-hover:text-black flex items-center justify-center transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 4.2 CATALOG VIEW ---
+        function renderCatalogView() {
+            const categories = ["Все", "Мужское", "Женское", "Худи", "Джинсы", "Куртки", "Кроссовки", "Аксессуары"];
+
+            // Filter items
+            let items = PRODUCTS.filter(p => {
+                const matchesCategory = (state.activeCategory === 'Все') || (p.category === state.activeCategory || p.type === state.activeCategory);
+                const matchesSearch = p.title.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
+                                      p.description.toLowerCase().includes(state.searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            // Sort items
+            if (state.sortBy === 'price-asc') {
+                items.sort((a, b) => a.price - b.price);
+            } else if (state.sortBy === 'price-desc') {
+                items.sort((a, b) => b.price - a.price);
+            }
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <!-- Catalog Header -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-zinc-800 pb-8 mb-8 gap-4">
+                        <div>
+                            <h1 class="font-display font-black text-3xl sm:text-5xl text-white uppercase">КАТАЛОГ ОДЕЖДЫ</h1>
+                            <p class="text-xs sm:text-sm text-zinc-400 mt-2">Найдено товаров: ${items.length}</p>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="w-full md:w-80 relative">
+                            <input type="text" id="catalog-search" value="${state.searchQuery}" placeholder="Поиск по названию..." 
+                                   class="w-full bg-zinc-900 border border-zinc-800 rounded-full px-5 py-3 pl-11 text-xs text-white focus:outline-none focus:border-brand-gold transition">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-zinc-500 text-sm"></i>
+                        </div>
+                    </div>
+
+                    <!-- Category Pills & Sorting Bar -->
+                    <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 mb-10">
+                        <!-- Category Buttons -->
+                        <div class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar">
+                            ${categories.map(cat => `
+                                <button onclick="setCatalogCategory('${cat}')" 
+                                        class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${state.activeCategory === cat ? 'bg-brand-gold text-black' : 'bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800'}">
+                                    ${cat}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <!-- Sorting Select -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-zinc-400 font-bold uppercase tracking-wider">Сортировка:</span>
+                            <select id="catalog-sort" onchange="setCatalogSort(this.value)" class="bg-zinc-900 border border-zinc-800 text-xs text-white rounded-lg px-4 py-2.5 focus:outline-none focus:border-brand-gold">
+                                <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>По умолчанию</option>
+                                <option value="price-asc" ${state.sortBy === 'price-asc' ? 'selected' : ''}>Сначала дешевле</option>
+                                <option value="price-desc" ${state.sortBy === 'price-desc' ? 'selected' : ''}>Сначала дороже</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Product Grid -->
+                    ${items.length > 0 ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            ${items.map(p => renderProductCard(p)).join('')}
+                        </div>
+                    ` : `
+                        <div class="text-center py-24 space-y-4">
+                            <i class="fa-solid fa-box-open text-5xl text-zinc-700"></i>
+                            <h3 class="font-display font-bold text-xl text-white">Товары не найдены</h3>
+                            <p class="text-sm text-zinc-500">Попробуйте изменить поисковый запрос или выбранную категорию.</p>
+                            <button onclick="resetCatalogFilters()" class="bg-brand-gold text-black font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-full hover:bg-white transition">
+                                Сбросить фильтры
+                            </button>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        function bindCatalogEvents() {
+            const searchInput = document.getElementById('catalog-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    state.searchQuery = e.target.value;
+                    renderView();
+                });
+            }
+        }
+
+        function setCatalogCategory(cat) {
+            state.activeCategory = cat;
+            renderView();
+        }
+
+        function setCatalogSort(val) {
+            state.sortBy = val;
+            renderView();
+        }
+
+        function resetCatalogFilters() {
+            state.activeCategory = 'Все';
+            state.searchQuery = '';
+            state.sortBy = 'default';
+            renderView();
+        }
+
+        // --- COMMON PRODUCT CARD RENDERER ---
+        function renderProductCard(product) {
+            const isFav = state.favorites.some(f => f.id === product.id);
+
+            return `
+                <div class="group glass-card rounded-2xl overflow-hidden border border-zinc-800/80 flex flex-col justify-between transition duration-300 hover:border-brand-gold/40">
+                    <div class="relative aspect-[3/4] overflow-hidden cursor-pointer" onclick="openProductModal(${product.id})">
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-full object-cover img-zoom">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition"></div>
+                        
+                        <!-- Badges Top Left -->
+                        <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                            ${product.isNew ? `<span class="bg-white text-black font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider">NEW</span>` : ''}
+                            ${product.discountPercent ? `<span class="badge-discount text-black font-extrabold text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider">-${product.discountPercent}%</span>` : ''}
+                        </div>
+
+                        <!-- Wishlist Toggle Top Right -->
+                        <button onclick="event.stopPropagation(); toggleFavorite(${product.id});" 
+                                class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-brand-gold hover:text-black flex items-center justify-center transition">
+                            <i class="${isFav ? 'fa-solid text-brand-gold' : 'fa-regular'} fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">${product.category}</span>
+                            <h3 onclick="openProductModal(${product.id})" class="font-display font-bold text-sm text-white hover:text-brand-gold transition cursor-pointer line-clamp-1 mt-0.5">
+                                ${product.title}
+                            </h3>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                            <div>
+                                <span class="font-display font-black text-base text-white">${formatPrice(product.price)}</span>
+                                ${product.oldPrice ? `<span class="block text-xs text-zinc-500 line-through">${formatPrice(product.oldPrice)}</span>` : ''}
+                            </div>
+                            <button onclick="quickAddToCart(${product.id})" class="bg-zinc-800 hover:bg-brand-gold hover:text-black text-white px-3.5 py-2 rounded-lg text-xs font-bold uppercase transition flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> В корзину
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 4.3 PRODUCT MODAL DETAILS ---
+        function openProductModal(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            state.selectedProduct = {
+                ...product,
+                chosenSize: product.sizes[0],
+                chosenColor: product.colors[0]
+            };
+
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 sm:p-10">
+                    <!-- Left: Product Image -->
+                    <div class="aspect-[3/4] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800">
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Right: Product Info & Selectors -->
+                    <div class="flex flex-col justify-between space-y-6">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-brand-gold/10 text-brand-gold text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-brand-gold/20">${product.category}</span>
+                                ${product.isNew ? `<span class="bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">NEW</span>` : ''}
+                            </div>
+
+                            <h2 class="font-display font-black text-2xl sm:text-3xl text-white uppercase">${product.title}</h2>
+                            <p class="text-xs text-zinc-400 leading-relaxed font-light">${product.description}</p>
+
+                            <div class="pt-2">
+                                <span class="font-display font-black text-2xl text-brand-gold">${formatPrice(product.price)}</span>
+                                ${product.oldPrice ? `<span class="text-sm text-zinc-500 line-through ml-3">${formatPrice(product.oldPrice)}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Size Selector -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">Выберите размер:</label>
+                            <div class="flex gap-2 flex-wrap" id="modal-sizes-container">
+                                ${product.sizes.map((s, idx) => `
+                                    <button onclick="selectModalSize('${s}')" class="modal-size-btn border px-4 py-2 rounded-lg text-xs font-bold uppercase transition ${idx === 0 ? 'border-brand-gold bg-brand-gold text-black' : 'border-zinc-800 text-zinc-300 hover:border-zinc-600'}">
+                                        ${s}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Color Selector -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-zinc-300 uppercase tracking-wider block">Доступные цвета:</label>
+                            <div class="flex gap-3" id="modal-colors-container">
+                                ${product.colors.map((c, idx) => `
+                                    <button onclick="selectModalColor('${c}')" class="modal-color-btn w-8 h-8 rounded-full border-2 transition ${idx === 0 ? 'ring-2 ring-brand-gold border-white' : 'border-transparent'}" style="background-color: ${c}"></button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pt-4 border-t border-zinc-800 flex gap-4">
+                            <button onclick="addToCartFromModal()" class="flex-grow bg-brand-gold text-black font-extrabold text-xs uppercase tracking-widest py-4 rounded-xl hover:bg-white transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bag-shopping"></i> Добавить в корзину
+                            </button>
+                            <button onclick="toggleFavorite(${product.id}); closeProductModal();" class="bg-zinc-800 text-white px-5 rounded-xl hover:text-brand-gold transition">
+                                <i class="fa-regular fa-heart text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function selectModalSize(size) {
+            state.selectedProduct.chosenSize = size;
+            document.querySelectorAll('.modal-size-btn').forEach(btn => {
+                if (btn.innerText.trim() === size) {
+                    btn.className = 'modal-size-btn border px-4 py-2 rounded-lg text-xs font-bold uppercase transition border-brand-gold bg-brand-gold text-black';
+                } else {
+                    btn.className = 'modal-size-btn border px-4 py-2 rounded-lg text-xs font-bold uppercase transition border-zinc-800 text-zinc-300 hover:border-zinc-600';
+                }
+            });
+        }
+
+        function selectModalColor(color) {
+            state.selectedProduct.chosenColor = color;
+        }
+
+        function addToCartFromModal() {
+            if (!state.selectedProduct) return;
+            const { id, title, price, image, chosenSize, chosenColor } = state.selectedProduct;
+            
+            const existingIndex = state.cart.findIndex(item => item.id === id && item.size === chosenSize && item.color === chosenColor);
+            
+            if (existingIndex > -1) {
+                state.cart[existingIndex].quantity += 1;
+            } else {
+                state.cart.push({
+                    id, title, price, image,
+                    size: chosenSize,
+                    color: chosenColor,
+                    quantity: 1
+                });
+            }
+
+            saveState();
+            closeProductModal();
+            showToast(`${title} добавлен в корзину!`);
+        }
+
+        function quickAddToCart(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = state.cart.findIndex(item => item.id === productId && item.size === product.sizes[0]);
+            if (existingIndex > -1) {
+                state.cart[existingIndex].quantity += 1;
+            } else {
+                state.cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    image: product.image,
+                    size: product.sizes[0],
+                    color: product.colors[0],
+                    quantity: 1
+                });
+            }
+
+            saveState();
+            showToast(`${product.title} добавлен в корзину!`);
+        }
+
+        function toggleFavorite(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const idx = state.favorites.findIndex(f => f.id === productId);
+            if (idx > -1) {
+                state.favorites.splice(idx, 1);
+                showToast(`Удалено из избранного`);
+            } else {
+                state.favorites.push(product);
+                showToast(`Добавлено в избранное`);
+            }
+
+            saveState();
+            renderView();
+        }
+
+        // --- 4.4 CART VIEW ---
+        function renderCartView() {
+            if (state.cart.length === 0) {
+                return `
+                    <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-6">
+                        <div class="w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-3xl text-zinc-600">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <h2 class="font-display font-black text-3xl text-white uppercase">ВАША КОРЗИНА ПУСТА</h2>
+                        <p class="text-sm text-zinc-400">Исследуйте наш каталог и выберите вещи из новой коллекции.</p>
+                        <button onclick="navTo('catalog')" class="inline-block bg-brand-gold text-black font-extrabold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white transition">
+                            Перейти к покупкам
+                        </button>
+                    </div>
+                `;
+            }
+
+            const totalPrice = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shippingCost = totalPrice >= 1000000 ? 0 : 40000;
+            const finalTotal = totalPrice + shippingCost;
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <h1 class="font-display font-black text-3xl sm:text-5xl text-white uppercase border-b border-zinc-800 pb-6 mb-8">КОРЗИНА ПОКУПОК</h1>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        <!-- Items List -->
+                        <div class="lg:col-span-2 space-y-4">
+                            ${state.cart.map((item, index) => `
+                                <div class="glass-card p-4 sm:p-6 rounded-2xl flex items-center gap-4 sm:gap-6 border border-zinc-800">
+                                    <img src="${item.image}" alt="${item.title}" class="w-20 h-24 sm:w-24 sm:h-32 object-cover rounded-xl border border-zinc-800">
+                                    
+                                    <div class="flex-grow space-y-1">
+                                        <h3 class="font-display font-bold text-sm sm:text-base text-white">${item.title}</h3>
+                                        <div class="text-xs text-zinc-400 space-x-3">
+                                            <span>Размер: <strong class="text-white">${item.size}</strong></span>
+                                        </div>
+                                        <div class="font-display font-black text-brand-gold text-sm sm:text-base pt-1">${formatPrice(item.price)}</div>
+                                    </div>
+
+                                    <!-- Quantity Controls -->
+                                    <div class="flex flex-col sm:flex-row items-center gap-3">
+                                        <div class="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-1">
+                                            <button onclick="changeQuantity(${index}, -1)" class="w-7 h-7 text-xs font-bold text-zinc-400 hover:text-white">-</button>
+                                            <span class="w-8 text-center text-xs font-bold text-white">${item.quantity}</span>
+                                            <button onclick="changeQuantity(${index}, 1)" class="w-7 h-7 text-xs font-bold text-zinc-400 hover:text-white">+</button>
+                                        </div>
+
+                                        <button onclick="removeFromCart(${index})" class="text-zinc-500 hover:text-red-500 p-2 text-sm transition">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Order Summary & Checkout Form -->
+                        <div class="space-y-6">
+                            <div class="glass-card p-6 rounded-2xl border border-zinc-800 space-y-4">
+                                <h3 class="font-display font-black text-lg text-white uppercase border-b border-zinc-800 pb-3">ИТОГО К ОПЛАТЕ</h3>
+                                
+                                <div class="space-y-2 text-xs">
+                                    <div class="flex justify-between text-zinc-400">
+                                        <span>Сумма товаров:</span>
+                                        <span class="text-white">${formatPrice(totalPrice)}</span>
+                                    </div>
+                                    <div class="flex justify-between text-zinc-400">
+                                        <span>Доставка:</span>
+                                        <span class="${shippingCost === 0 ? 'text-emerald-400' : 'text-white'}">
+                                            ${shippingCost === 0 ? 'БЕСПЛАТНО' : formatPrice(shippingCost)}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-zinc-800 pt-4 flex justify-between items-center">
+                                    <span class="font-display font-bold text-sm text-white">ВСЕГО:</span>
+                                    <span class="font-display font-black text-xl text-brand-gold">${formatPrice(finalTotal)}</span>
+                                </div>
+                            </div>
+
+                            <!-- Checkout Form -->
+                            <form onsubmit="handleCheckout(event, ${finalTotal})" class="glass-card p-6 rounded-2xl border border-zinc-800 space-y-4">
+                                <h4 class="font-display font-bold text-sm text-white uppercase">Оформление Заказа</h4>
+                                
+                                <input type="text" id="co-name" required placeholder="Имя и Фамилия *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-brand-gold">
+                                <input type="tel" id="co-phone" required placeholder="Номер телефона (+998...) *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-brand-gold">
+                                <input type="text" id="co-city" required placeholder="Город (например, Ташкент) *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-brand-gold">
+                                <textarea id="co-address" required rows="2" placeholder="Адрес доставки (Улица, дом, квартира) *" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-brand-gold"></textarea>
+
+                                <button type="submit" class="w-full bg-brand-gold text-black font-extrabold text-xs uppercase tracking-widest py-4 rounded-xl hover:bg-white transition flex items-center justify-center gap-2 shadow-lg shadow-brand-gold/10">
+                                    <i class="fa-brands fa-telegram text-base"></i> Заказать через Telegram
+                                </button>
+                                <p class="text-[10px] text-zinc-500 text-center">Заказ будет мгновенно сформирован и отправлен менеджеру в Telegram.</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function changeQuantity(index, delta) {
+            if (state.cart[index]) {
+                state.cart[index].quantity += delta;
+                if (state.cart[index].quantity <= 0) {
+                    state.cart.splice(index, 1);
+                }
+                saveState();
+                renderView();
+            }
+        }
+
+        function removeFromCart(index) {
+            state.cart.splice(index, 1);
+            saveState();
+            renderView();
+        }
+
+        function handleCheckout(event, totalAmount) {
+            event.preventDefault();
+            const name = document.getElementById('co-name').value.trim();
+            const phone = document.getElementById('co-phone').value.trim();
+            const city = document.getElementById('co-city').value.trim();
+            const address = document.getElementById('co-address').value.trim();
+
+            let text = `🛍 *НОВЫЙ ЗАКАЗ ИЗ STORE STYLE ZONE*\n\n`;
+            text += `👤 *Покупатель:* ${name}\n`;
+            text += `📞 *Телефон:* ${phone}\n`;
+            text += `📍 *Адрес:* ${city}, ${address}\n\n`;
+            text += `📦 *Товары в заказе:*\n`;
+
+            state.cart.forEach((item, i) => {
+                text += `${i + 1}. ${item.title} (Размер: ${item.size}) — ${item.quantity} шт. х ${item.price.toLocaleString()} UZS\n`;
+            });
+
+            text += `\n💰 *Итоговая сумма:* ${totalAmount.toLocaleString()} UZS`;
+
+            const encodedText = encodeURIComponent(text);
+            const telegramUrl = `https://t.me/share/url?url=&text=${encodedText}`;
+
+            // Reset cart
+            state.cart = [];
+            saveState();
+
+            window.open(telegramUrl, '_blank');
+            renderView();
+            showToast("Заказ сформирован и переправлен в Telegram!");
+        }
+
+        // --- 4.5 FAVORITES VIEW ---
+        function renderFavoritesView() {
+            if (state.favorites.length === 0) {
+                return `
+                    <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-6">
+                        <div class="w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-3xl text-zinc-600">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <h2 class="font-display font-black text-3xl text-white uppercase">ИЗБРАННОЕ ПУСТО</h2>
+                        <p class="text-sm text-zinc-400">Сохраняйте понравившиеся товары, чтобы не потерять их.</p>
+                        <button onclick="navTo('catalog')" class="inline-block bg-brand-gold text-black font-extrabold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white transition">
+                            Перейти в каталог
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <h1 class="font-display font-black text-3xl sm:text-5xl text-white uppercase border-b border-zinc-800 pb-6 mb-8">ИЗБРАННЫЕ ТОВАРЫ</h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        ${state.favorites.map(p => renderProductCard(p)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 4.6 ABOUT VIEW ---
+        function renderAboutView() {
+            return `
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+                    <div class="text-center space-y-4 max-w-3xl mx-auto">
+                        <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">ФИЛОСОФИЯ МАРКИ</span>
+                        <h1 class="font-display font-black text-4xl sm:text-6xl text-white uppercase leading-tight">STYLE ZONE — ЭТО БОЛЬШЕ, ЧЕМ ОДЕЖДА</h1>
+                        <p class="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">
+                            Мы создаем вещи для людей, ценящих бескомпромиссный комфорт, минимализм и внимание к каждой строчке. Наш бренд родился в Ташкенте и объединяет традиции высокого портновского искусства с духом современной уличной культуры.
+                        </p>
+                    </div>
+
+                    <div class="aspect-video rounded-3xl overflow-hidden border border-zinc-800 relative">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="About Studio" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="glass-card p-8 rounded-2xl border border-zinc-800 space-y-2">
+                            <span class="font-display font-black text-4xl text-brand-gold">100%</span>
+                            <h4 class="font-bold text-white uppercase text-sm">Органический Хлопок</h4>
+                            <p class="text-xs text-zinc-500">Используем гипоаллергенные ткани высшего качества сертификации GOTS.</p>
+                        </div>
+                        <div class="glass-card p-8 rounded-2xl border border-zinc-800 space-y-2">
+                            <span class="font-display font-black text-4xl text-brand-gold">50</span>
+                            <h4 class="font-bold text-white uppercase text-sm">Экземпляров в Дропе</h4>
+                            <p class="text-xs text-zinc-500">Ограниченные лимитированные серии подчёркивают вашу индивидуальность.</p>
+                        </div>
+                        <div class="glass-card p-8 rounded-2xl border border-zinc-800 space-y-2">
+                            <span class="font-display font-black text-4xl text-brand-gold">24/7</span>
+                            <h4 class="font-bold text-white uppercase text-sm">Забота о клиентах</h4>
+                            <p class="text-xs text-zinc-500">Персональный стилист поможет с подбором размера и стиля в Telegram.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 4.7 CONTACTS VIEW ---
+        function renderContactsView() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Contacts Info -->
+                        <div class="space-y-8">
+                            <div>
+                                <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">СВЯЖИТЕСЬ С НАМИ</span>
+                                <h1 class="font-display font-black text-4xl sm:text-5xl text-white uppercase mt-2">ФЛАГМАНСКИЙ ШОУРУМ</h1>
+                            </div>
+
+                            <div class="space-y-6 text-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-gold flex-shrink-0">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white uppercase">Адрес в Ташкенте:</h4>
+                                        <p class="text-zinc-400">Узбекистан, г. Ташкент, Мирабадский район, ул. Тараса Шевченко, 21</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-gold flex-shrink-0">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white uppercase">Телефон для связи:</h4>
+                                        <p class="text-zinc-400">+998 (90) 123-45-67</p>
+                                        <p class="text-zinc-400">+998 (71) 200-00-00</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-brand-gold flex-shrink-0">
+                                        <i class="fa-brands fa-telegram"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white uppercase">Telegram Консультант:</h4>
+                                        <a href="https://t.me" target="_blank" class="text-brand-gold hover:underline">@stylezone_tashkent</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feedback Form -->
+                        <div class="glass-card p-8 rounded-3xl border border-zinc-800 space-y-6">
+                            <h3 class="font-display font-black text-xl text-white uppercase">НАПИСАТЬ НАМ</h3>
+                            <form onsubmit="handleFeedback(event)" class="space-y-4">
+                                <div>
+                                    <label class="text-xs text-zinc-400 uppercase font-bold block mb-1">Ваше имя</label>
+                                    <input type="text" required placeholder="Александр" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-gold">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-zinc-400 uppercase font-bold block mb-1">Ваш Email или Телефон</label>
+                                    <input type="text" required placeholder="example@mail.com / +998..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-gold">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-zinc-400 uppercase font-bold block mb-1">Сообщение</label>
+                                    <textarea required rows="4" placeholder="Ваш вопрос или отзыв..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-brand-gold"></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-brand-gold text-black font-extrabold text-xs uppercase tracking-widest py-4 rounded-xl hover:bg-white transition">
+                                    Отправить Сообщение
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleSubscribe(event) {
+            event.preventDefault();
+            showToast("Вы успешно подписаны на обновления STYLE ZONE!");
+            event.target.reset();
+        }
+
+        function handleFeedback(event) {
+            event.preventDefault();
+            showToast("Спасибо за ваше сообщение! Мы ответим в ближайшее время.");
+            event.target.reset();
+        }
+
+        /* =========================================================================
+           5. APP INITIALIZATION
+           ========================================================================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            saveState();
+            renderView();
+            
+            // Mobile Menu listener
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', toggleMobileMenu);
+            }
+        });
+    </script>
+</body>
+</html>
